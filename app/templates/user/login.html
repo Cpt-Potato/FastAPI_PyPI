@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block additional_css %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="form-container">
+        <form action="" method="POST" class="account-form">
+            <h1>Login to PyPI</h1>
+
+            <input name="email" type="email" placeholder=" Your email address" class="form-control"
+                   value="{{ email }}" required>
+            <input name="password" type="password" placeholder=" Password" class="form-control"
+                   value="{{ password }}" required>
+            <button type="submit" class="btn btn-danger">Log In</button>
+            <div style="clear: both;"></div>
+
+            {% if error %}
+                <div class="error-msg">{{ error }}</div>
+            {% endif %}
+
+        </form>
+    </div>
+
+{% endblock %}
