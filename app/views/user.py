@@ -1,23 +1,21 @@
 import base64
 
-from fastapi import APIRouter, Form
+from fastapi import APIRouter, Depends, Form
 from fastapi.requests import Request
 from fastapi.responses import RedirectResponse
 
 from ..core.config import templates
 from ..core.security import (authenticate_user, get_password_hash,
-                             get_user_email_from_cookie)
+                             is_logged_in_from_cookie)
 from ..db.models import User
 
 router = APIRouter()
 
 
 @router.get("/account")
-async def account(request: Request):
-    email = await get_user_email_from_cookie(request)
-    if not email:
-        return RedirectResponse(url="/user/login", status_code=301)
-    context = {"request": request, "email": email, "is_logged_in": True}
+async def account(context: dict = Depends(is_logged_in_from_cookie)):
+    if not context.get("is_logged_in"):
+        return RedirectResponse(url="/user/login")
     return templates.TemplateResponse("user/account.html", context)
 
 
@@ -37,7 +35,7 @@ async def login_post(
     if not await authenticate_user(email, password):
         context["error"] = "The user does not exist or the password is wrong."
         return templates.TemplateResponse("user/login.html", context)
-    response = RedirectResponse("/user/account", status_code=301)
+    response = RedirectResponse("/user/account")
     response.set_cookie(
         key="email",
         value=base64.b64encode(email.encode()).decode(),

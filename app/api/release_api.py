@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
+from fastapi.responses import JSONResponse
 
 from ..db.models import Release
 from ..schemas import ReleaseDelete, ReleaseIn, ReleaseOut, ReleaseUpdate
@@ -36,4 +37,4 @@ async def delete_release(release: ReleaseDelete):
     if not is_in_db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     await is_in_db.delete()
-    return "OK"
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content="OK")

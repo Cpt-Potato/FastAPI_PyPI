@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from .config import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
 from ..db.models import User
-from ..schemas import UserIn
+from ..schemas import UserIn, UserSecurityOut
 
 
 class Token(BaseModel):
@@ -37,11 +37,21 @@ async def get_user_email_from_cookie(request: Request) -> str | None:
     return email
 
 
-async def get_user_by_email(email: str) -> UserIn | None:
+async def is_logged_in_from_cookie(request: Request) -> dict:
+    has_cookie = await get_user_email_from_cookie(request)
+    context = {"request": request, "email": has_cookie, "is_logged_in": True}
+    if not has_cookie:
+        context["is_logged_in"] = False
+    return context
+
+
+async def get_user_by_email(email: str) -> UserSecurityOut | None:
     return await User.objects.get_or_none(email=email)
 
 
-async def authenticate_user(email: str, password: str) -> UserIn | None:
+async def authenticate_user(
+    email: str, password: str
+) -> UserSecurityOut | None:
     user = await get_user_by_email(email)
     if not user or not verify_password(password, user.hashed_password):
         return None

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
+from fastapi.responses import JSONResponse
 
 from ..db.models import Project
 from ..schemas import (ProjectDelete, ProjectIn, ProjectOut,
@@ -47,4 +48,4 @@ async def delete_project(project: ProjectDelete):
     if not is_in_db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     await is_in_db.delete()
-    return "OK"
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content="OK")

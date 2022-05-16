@@ -42,6 +42,10 @@ class UserUpdateOut(UserBase):
     hashed_password: str
 
 
+class UserSecurityOut(UserUpdateOut):
+    pass
+
+
 class UserIn(UserUpdate):
     pass
 

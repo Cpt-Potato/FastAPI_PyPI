@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
 from ..core.security import (Token, authenticate_user, create_access_token,
@@ -92,4 +93,4 @@ async def update_user(
 async def delete_user(current_user=Depends(get_current_user)):
     """ User can be deleted only if he has no projects """
     await current_user.delete()
-    return "OK"
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content="OK")
