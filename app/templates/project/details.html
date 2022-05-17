@@ -12,13 +12,15 @@
                 <div class="col-sm-1"></div>
                 <div class="col-sm-8">
                     <h1>
-                        {{ project.id }} {# {{ release.latest_version }} #}
+                        {{ project.id }} {{ latest_release.version }}
                     </h1>
 
                     <div class="install sub-hero">
                         pip install
                         {% if not is_latest %}
-                            {{ project.id }}<span>=={{ release.version }}</span>
+                            {{ project.id }}<span>=={{ latest_release.version }}</span>
+                        {% else %}
+                            {{ project.id }}
                         {% endif %}
                     </div>
                 </div>
@@ -41,7 +43,7 @@
                         Last release:
                         {% if latest_release %}
                             <span>
-                                {{ latest_release.created_date.date().isoformat() }}
+                                {{ latest_release.created_date.date() }}
                             </span>
                         {% endif %}
 
@@ -62,7 +64,6 @@
             <div class="row">
                 <div class="col-sm-3 nav-sidebar-section">
 
-
                     <h3>Navigation</h3>
                     <a href="/project/{{ project.id }}">
                         <i class="fa fa-align-left" aria-hidden="true"></i>
@@ -78,14 +79,12 @@
                     </a>
                     <hr>
 
-
                     <h3>Project links</h3>
                     <a href="{{ project.homepage }}">
                         <i class="fa fa-home" aria-hidden="true"></i>
                         Homepage
                     </a>
                     <hr>
-
 
                     <h3>Statistics</h3>
 
@@ -100,11 +99,11 @@
 
                     <h3>Meta</h3>
                     <div class="meta-topic">
-                        <span>License</span>: {{ package.license }}
+                        <span>License</span>: {{ project.license }}
                     </div>
 
                     <div class="meta-topic">
-                        <span>Author</span>: {{ package.author }}
+                        <span>Author</span>: {{ project.author }}
                     </div>
                     <hr>
 

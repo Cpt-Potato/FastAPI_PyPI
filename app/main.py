@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .api import project_api, release_api, user_api
 from .db.base import database
-from .views import index, user
+from .views import index, project, user
 
 app = FastAPI()
 
@@ -16,6 +16,9 @@ app.include_router(release_api.router, prefix="/api", tags=["release"])
 
 # ------ INDEX ------
 app.include_router(index.router, tags=["index"], include_in_schema=False)
+
+# ------ PROJECTS ------
+app.include_router(project.router, prefix="/project", include_in_schema=False)
 
 # ------ ACCOUNT ------
 app.include_router(
