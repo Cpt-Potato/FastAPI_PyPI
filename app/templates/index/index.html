@@ -33,13 +33,15 @@
                 <span class="subtitle">Hot off the press: the newest project releases</span>
 
                 {% for project in projects %}
-                    <div class="title"><a href="/project/{{ project.id }}">{{ project.id }}</a></div>
-                    <div class="desc">{{ project.summary }}</div>
+                    <div class="project">
+                        <div class="title"><a href="/project/{{ project.id }}">{{ project.id }}</a></div>
+                        <div class="desc">{{ project.summary }}</div>
+                    </div>
                 {% endfor %}
 
             </div>
+            <div class="col-md-3"></div>
         </div>
-        <div class="col-md-3"></div>
     </div>
 
 {% endblock %}

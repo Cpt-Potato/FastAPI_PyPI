@@ -6,7 +6,7 @@
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
     border-color: #02377c;
-
+    justify-content: flex-end;
     color: white;
 }
 

@@ -2,6 +2,7 @@ import base64
 from datetime import datetime, timedelta
 
 from fastapi import Depends, HTTPException, Request, status
+from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -27,6 +28,18 @@ def get_password_hash(password) -> str:
 
 def verify_password(plain_password, hashed_password) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
+
+
+async def set_cookie_and_redirect_to_account(email: str):
+    response = RedirectResponse(
+        "/user/account", status_code=status.HTTP_301_MOVED_PERMANENTLY
+    )
+    response.set_cookie(
+        key="email",
+        value=base64.b64encode(email.encode()).decode(),
+        max_age=3600
+    )
+    return response
 
 
 async def get_user_email_from_cookie(request: Request) -> str | None:
@@ -66,7 +79,9 @@ def create_access_token(data: dict) -> str:
     return encoded_jwt
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> UserIn:
+async def get_current_user(
+    token: str = Depends(oauth2_scheme)
+) -> UserSecurityOut | None:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
