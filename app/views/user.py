@@ -30,7 +30,7 @@ async def login_get(
 
 @router.post("/login")
 async def login_post(
-    request: Request, email: str = Form(...), password: str = Form(...)
+    request: Request, email: str = Form(), password: str = Form()
 ):
     context = {"request": request, "email": email}
     if not await authenticate_user(email, password):
@@ -51,7 +51,7 @@ async def register_get(
 
 @router.post("/register")
 async def register_post(
-    request: Request, email: str = Form(...), password: str = Form(...)
+    request: Request, email: str = Form(), password: str = Form()
 ):
     is_in_db = await User.objects.get_or_none(email=email)
     if is_in_db:
