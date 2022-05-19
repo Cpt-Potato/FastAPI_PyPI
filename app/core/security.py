@@ -30,7 +30,7 @@ def verify_password(plain_password, hashed_password) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-async def set_cookie_and_redirect_to_account(email: str):
+async def set_cookie_and_redirect_to_account(email: str) -> RedirectResponse:
     response = RedirectResponse(
         "/user/account", status_code=status.HTTP_301_MOVED_PERMANENTLY
     )
@@ -55,6 +55,7 @@ async def is_logged_in_from_cookie(request: Request) -> dict:
     context = {"request": request, "email": has_cookie, "is_logged_in": True}
     if not has_cookie:
         context["is_logged_in"] = False
+        context.pop("email")
     return context
 
 
