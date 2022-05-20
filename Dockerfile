@@ -1,4 +1,4 @@
-# pull official base image
+# pull official python image
 FROM python:3.10.4-slim
 
 # set working directory

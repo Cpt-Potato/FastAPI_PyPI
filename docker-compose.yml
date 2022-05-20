@@ -6,10 +6,10 @@ volumes:
 services:
   db:
     image: postgres:14.3-alpine
+    # make it available from localhost
+    # or use "expose: - 5432" for in-container access only
     ports:
       - "5432:5432"
-    expose:
-      - 5432
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "admin"
@@ -17,8 +17,8 @@ services:
     volumes:
       # connect db to volume not to lose data after stop
       - postgres-data:/var/lib/postgresql/data
-      # populate db with data
-      - ./db_dump.sql:/docker-entrypoint-initdb.d
+      # populate db with data (db_dump.sql)
+      - .:/docker-entrypoint-initdb.d
 
   app:
     build: .

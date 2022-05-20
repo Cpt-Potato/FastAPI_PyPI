@@ -4,7 +4,9 @@ venv
 .dockerignore
 Dockerfile
 
+.git
 .gitignore
 README.md
 
-migrations/versions/
+migrations
+alembic.ini
