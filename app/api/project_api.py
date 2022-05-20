@@ -12,17 +12,26 @@ router = APIRouter()
 
 @router.get(
     "/projects",
-    response_model=list[ProjectAndReleasesOutNoDescription],
+    response_model=ProjectAndReleasesOutNoDescription,
     response_model_exclude={"description"},
     name="Show project and its releases"
 )
-async def get_project_and_releases(project_name: str):
-    return await (
-        Project.objects.select_all()
+async def get_project_and_releases(project_name: str, page: int = 1):
+    """20 releases will be shown per page, the latest ones first"""
+    project = await (
+        Project.objects
         .exclude_fields(["description"])
-        .filter(pk=project_name)
+        .get_or_none(pk=project_name)
+    )
+    if not project:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    await (
+        project.project_releases
+        .order_by("-version")
+        .paginate(page=page, page_size=20)
         .all()
     )
+    return project
 
 
 @router.get("/project/me", response_model=UserOutProjectInfo)
