@@ -1,0 +1,10 @@
+.idea
+venv
+
+.dockerignore
+Dockerfile
+
+.gitignore
+README.md
+
+migrations/versions/
