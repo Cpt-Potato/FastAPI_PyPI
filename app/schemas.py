@@ -80,7 +80,7 @@ class ProjectOut(ProjectAndReleases):
     user_id: UserBase | None = None
 
 
-class ProjectOutNoDescription(ProjectOut):
+class ProjectAndReleasesOutNoDescription(ProjectOut):
     description: str | None = "For description go to website"
 
 
