@@ -1,25 +1,36 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 
-from ..db.models import Project
+from ..core.security import get_current_user
+from ..db.models import Project, User
 from ..schemas import (ProjectDelete, ProjectIn, ProjectOut,
-                       ProjectOutNoDescription, ProjectUpdate)
+                       ProjectAndReleasesOutNoDescription, ProjectUpdate,
+                       UserIn, UserOutProjectInfo)
 
 router = APIRouter()
 
 
 @router.get(
     "/projects",
-    response_model=list[ProjectOutNoDescription],
+    response_model=list[ProjectAndReleasesOutNoDescription],
     response_model_exclude={"description"},
-    name="Show all projects and releases"
+    name="Show project and its releases"
 )
-async def get_projects(page: int = 1):
+async def get_project_and_releases(project_name: str):
     return await (
         Project.objects.select_all()
         .exclude_fields(["description"])
-        .paginate(page=page, page_size=10)
+        .filter(pk=project_name)
         .all()
+    )
+
+
+@router.get("/project/me", response_model=UserOutProjectInfo)
+async def get_own_projects(current_user: UserIn = Depends(get_current_user)):
+    return await (
+        User.objects
+            .select_all(follow=True)
+            .get_or_none(email=current_user.email)
     )
 
 

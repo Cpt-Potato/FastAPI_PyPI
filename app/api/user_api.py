@@ -29,8 +29,8 @@ async def login_for_access_token(
 @router.get(
     "/users", response_model=list[UserOut], name="Show all users"
 )
-async def get_users():
-    return await User.objects.all()
+async def get_users(page: int = 1):
+    return await User.objects.paginate(page=page, page_size=20).all()
 
 
 @router.get(
@@ -44,15 +44,6 @@ async def get_user_by_id(user_id: int):
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return user
-
-
-@router.get("/user/me/projects", response_model=UserOutProjectInfo)
-async def get_own_projects(current_user: UserIn = Depends(get_current_user)):
-    return await (
-        User.objects
-            .select_all(follow=True)
-            .get_or_none(email=current_user.email)
-    )
 
 
 @router.post(

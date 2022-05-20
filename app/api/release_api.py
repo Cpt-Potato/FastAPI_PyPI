@@ -8,8 +8,8 @@ router = APIRouter()
 
 
 @router.get("/releases", response_model=list[ReleaseOut])
-async def get_releases():
-    return await Release.objects.all()
+async def get_releases(page: int = 1):
+    return await Release.objects.paginate(page=page, page_size=20).all()
 
 
 @router.post(
