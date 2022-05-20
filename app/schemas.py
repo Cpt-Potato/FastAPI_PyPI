@@ -34,7 +34,6 @@ class UserCreateOut(UserUpdateOut):
 
 class ReleaseBase(BaseModel):
     id: int
-    name: str = "release"
     version: str = "0.0.1"
     created_date: datetime = datetime.utcnow()
 
