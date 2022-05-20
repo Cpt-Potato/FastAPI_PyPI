@@ -121,16 +121,6 @@ ALTER TABLE ONLY public.releases ALTER COLUMN id SET DEFAULT nextval('public.rel
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
-
---
--- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.alembic_version (version_num) FROM stdin;
-d8dcf7a85b2a
-\.
-
-
 --
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5645,15 +5635,6 @@ SELECT pg_catalog.setval('public.releases_id_seq', 2, true);
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 10, true);
-
-
---
--- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.alembic_version
-    ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
-
 
 --
 -- Name: projects projects_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
