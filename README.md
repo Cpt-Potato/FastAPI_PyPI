@@ -16,7 +16,8 @@ https://github.com/Cpt-Potato/FastAPI_PyPI.git
 * Перейти в папку с проектом
 * Создать контейнеры со всеми нужными зависимостями и запустить их
 ```
-docker-compose up
+docker-compose create
+docker-compose restart
 ```
 * Перейти по адресу [127.0.0.1:8000](127.0.0.1:8000) или [127.0.0.1:8000/docs](127.0.0.1:8000/docs)
 ### Также можно подключиться к локальной PostgreSQL (или другой БД)
